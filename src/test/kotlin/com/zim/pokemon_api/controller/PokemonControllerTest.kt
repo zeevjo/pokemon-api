@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.mockito.Mockito.mock
 
 @WebMvcTest(PokemonController::class)
-@Import(PokemonControllerTest.TestConfig::class)
+//@Import(PokemonControllerTest.TestConfig::class)
 class PokemonControllerTest {
 
     @Autowired
@@ -57,6 +57,7 @@ class PokemonControllerTest {
 
     @Test
     fun `should return not found when pokemon does not exist`() {
+
         // Given
         whenever(pokemonService.getPokemonById(1)).thenReturn(null)
 
