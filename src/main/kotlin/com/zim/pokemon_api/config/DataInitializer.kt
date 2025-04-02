@@ -30,14 +30,12 @@ class DataInitializer {
 
                     // Convert 'type' array to a List<String>
                     val types = pokemonNode.get("type").map { it.asText() }
-
                     Pokemon(id, pokedexNumber, name, img, types)
                 }
 
                 // Save all pokemons to H2DB
                 pokemonService.saveAll(pokemons)
                 println("Successfully loaded ${pokemons.size} Pokemon into the database")
-
             } catch (e: IOException) {
                 println("Error reading the file: ${e.message}")
             }

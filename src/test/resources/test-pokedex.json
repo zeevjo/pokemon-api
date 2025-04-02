@@ -1,0 +1,18 @@
+{
+  "pokemon": [
+    {
+      "id": 1,
+      "num": "001",
+      "name": "Bulbasaur",
+      "img": "img_url",
+      "type": ["Grass", "Poison"]
+    },
+    {
+      "id": 2,
+      "num": "002",
+      "name": "Ivysaur",
+      "img": "img_url",
+      "type": ["Grass", "Poison"]
+    }
+  ]
+}
