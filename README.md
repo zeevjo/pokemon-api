@@ -18,20 +18,20 @@ A simple REST API built with Spring Boot and Kotlin that provides information ab
 ### Clone the repository
 
 ```bash
-git clone https://github.com/zeevjo/pokemon-api.git
-cd pokemon-api
+  git clone https://github.com/zeevjo/pokemon-api.git
+  cd pokemon-api
 ```
 
 ### Build the application
 
 ```bash
-./gradlew build
+  ./gradlew build
 ```
 
 ### Run the application
 
 ```bash
-./gradlew bootRun
+  ./gradlew bootRun
 ```
 
 The API will be available at `http://localhost:8080`
@@ -87,5 +87,5 @@ Example response for `/api/pokemon/25`:
 To run the tests:
 
 ```bash
-./gradlew test
+    ./gradlew test
 ```
