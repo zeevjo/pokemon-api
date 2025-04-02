@@ -6,30 +6,20 @@ import org.mockito.kotlin.whenever
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.mockito.Mockito.mock
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 
 @WebMvcTest(PokemonController::class)
-//@Import(PokemonControllerTest.TestConfig::class)
 class PokemonControllerTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
 
-    @Autowired
+    @MockitoBean
     private lateinit var pokemonService: PokemonService
-
-    @Configuration
-    class TestConfig {
-        @Bean
-        fun pokemonService(): PokemonService = mock(PokemonService::class.java)
-    }
 
     @Test
     fun `should return all pokemons`() {
@@ -66,3 +56,4 @@ class PokemonControllerTest {
             .andExpect { status().isNotFound }
     }
 }
+
