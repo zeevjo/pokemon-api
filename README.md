@@ -1,10 +1,10 @@
 # Pokemon API
 
-A simple REST API built with Spring Boot and Kotlin that provides information about the original 151 Pokemon.
+A simple REST API built with Spring Boot and Kotlin that provides information about the original 151 Pokemons.
 
 ## Features
 
-- List all available Pokemon
+- List all available Pokemons
 - Retrieve detailed information about a specific Pokemon by ID
 - Data includes name, types, PokedexNumber, and image URL for each Pokemon
 
@@ -20,12 +20,13 @@ A simple REST API built with Spring Boot and Kotlin that provides information ab
 ```bash
   git clone https://github.com/zeevjo/pokemon-api.git
   cd pokemon-api
+  git switch dev
 ```
 
 ### Build the application
 
 ```bash
-  ./gradlew build
+  ./gradlew clean build
 ```
 
 ### Run the application
@@ -38,7 +39,7 @@ The API will be available at `http://localhost:8080`
 
 ## API Endpoints
 
-### Get all Pokemon
+### Get all Pokemons
 
 ```
 GET /api/pokemon

@@ -40,6 +40,15 @@ kotlin {
 	}
 }
 
+tasks.test {
+	testLogging {
+		events("passed", "skipped", "failed")
+		showStandardStreams = true
+	}
+}
+
+
+
 allOpen {
 	annotation("jakarta.persistence.Entity")
 	annotation("jakarta.persistence.MappedSuperclass")
