@@ -7,7 +7,6 @@ import org.mockito.kotlin.*
 import org.assertj.core.api.Assertions.assertThat
 
 class PokemonServiceTest {
-
     private val pokemonRepository: PokemonRepository = mock()
     private val pokemonService = PokemonService(pokemonRepository)
 
@@ -22,7 +21,12 @@ class PokemonServiceTest {
 
         // Then
         assertThat(result).hasSize(1)
-        assertThat(result[0].name).isEqualTo("Bulbasaur")
+        val resultPokemon = result[0]
+        assertThat(resultPokemon.id).isEqualTo(1)
+        assertThat(resultPokemon.pokedexNumber).isEqualTo("001")
+        assertThat(resultPokemon.name).isEqualTo("Bulbasaur")
+        assertThat(resultPokemon.img).isEqualTo("img_url")
+        assertThat(resultPokemon.types).containsExactly("Grass", "Poison")
     }
 
     @Test
@@ -35,14 +39,31 @@ class PokemonServiceTest {
         val result = pokemonService.getPokemonById(1)
 
         // Then
+        assertThat(result).isNotNull
+        assertThat(result?.id).isEqualTo(1)
+        assertThat(result?.pokedexNumber).isEqualTo("001")
         assertThat(result?.name).isEqualTo("Bulbasaur")
+        assertThat(result?.img).isEqualTo("img_url")
+        assertThat(result?.types).containsExactly("Grass", "Poison")
+    }
+
+    @Test
+    fun `should return null when pokemon not found by id`() {
+        // Given
+        whenever(pokemonRepository.findById(999)).thenReturn(java.util.Optional.empty())
+
+        // When
+        val result = pokemonService.getPokemonById(999)
+
+        // Then
+        assertThat(result).isNull()
     }
 
     @Test
     fun `should save all pokemons to the repository`() {
         // Given
         val pokemon1 = Pokemon(1, "001", "Bulbasaur", "img_url", listOf("Grass", "Poison"))
-        val pokemon2 = Pokemon(2, "002", "Ivysaur", "img_url", listOf("Grass", "Poison"))
+        val pokemon2 = Pokemon(2, "002", "Ivysaur", "img_url2", listOf("Grass", "Poison"))
         val pokemons = listOf(pokemon1, pokemon2)
 
         // When

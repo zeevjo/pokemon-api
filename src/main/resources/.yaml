@@ -22,3 +22,5 @@ spring:
 
   poke:
     path: pokedex.json
+
+

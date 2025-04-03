@@ -11,49 +11,7 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.verify
-import org.springframework.core.io.ClassPathResource
 
-//@ExtendWith(MockitoExtension::class)
-//class DataInitializerTest {
-//
-//    @Mock
-//    lateinit var pokemonService: PokemonService
-//
-//    @InjectMocks
-//    lateinit var dataInitializer: DataInitializer
-//
-//    @Test
-//    fun `should load and save pokemons from test-pokedex json`() {
-//        // given
-//        val objectMapper = ObjectMapper()
-//        val testResource = ClassPathResource("test-pokedex.json")
-//        val jsonNode = objectMapper.readTree(testResource.inputStream.use { it.readBytes() })
-//        val pokemonArray = jsonNode.get("pokemon")
-//
-//        val pokemons = pokemonArray.map { pokemonNode ->
-//            val id = pokemonNode.get("id").asInt()
-//            val pokedexNumber = pokemonNode.get("num").asText()
-//            val name = pokemonNode.get("name").asText()
-//            val img = pokemonNode.get("img").asText()
-//            val types = pokemonNode.get("type").map { it.asText() }
-//            Pokemon(id, pokedexNumber, name, img, types)
-//        }
-//
-//        // when
-//        pokemonService.saveAll(pokemons)
-//
-//        // then
-//        val captor = argumentCaptor<List<Pokemon>>()
-//        verify(pokemonService).saveAll(captor.capture())
-//        val savedPokemons = captor.firstValue
-//
-//        assertThat(savedPokemons).hasSize(2)
-//        assertThat(savedPokemons[0].name).isEqualTo("Bulbasaur")
-//        assertThat(savedPokemons[1].name).isEqualTo("Ivysaur")
-//    }
-//
-//
-//}
 @ExtendWith(MockitoExtension::class)
 class DataInitializerTest {
     @Mock
@@ -71,7 +29,7 @@ class DataInitializerTest {
 
         // when
         val commandLineRunner = dataInitializer.initDatabase(pokemonService, objectMapper)
-        commandLineRunner.run() // This executes the actual CommandLineRunner logic
+        commandLineRunner.run()
 
         // then
         val captor = argumentCaptor<List<Pokemon>>()
