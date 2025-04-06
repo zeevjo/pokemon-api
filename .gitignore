@@ -45,3 +45,6 @@ Thumbs.db
 # Generated files
 bin/
 generated/
+
+
+.cr

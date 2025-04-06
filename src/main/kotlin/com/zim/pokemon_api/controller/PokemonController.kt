@@ -11,7 +11,7 @@ class PokemonController(private val pokemonService: PokemonService) {
 
     @GetMapping
     fun getAllPokemon(): List<Pokemon> {
-        return pokemonService.getAllPokemon()
+        return pokemonService.getAll()
     }
 
     @GetMapping("/{id}")

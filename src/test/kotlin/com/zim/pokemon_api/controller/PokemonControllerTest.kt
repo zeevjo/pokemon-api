@@ -1,6 +1,7 @@
 package com.zim.pokemon_api.controller
 
 import com.zim.pokemon_api.model.Pokemon
+import com.zim.pokemon_api.model.PokemonType
 import com.zim.pokemon_api.service.PokemonService
 import org.mockito.kotlin.whenever
 import org.junit.jupiter.api.Test
@@ -22,8 +23,9 @@ class PokemonControllerTest {
     @Test
     fun `should return all pokemons`() {
         // Given
-        val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", listOf("Grass", "Poison"))
-        whenever(pokemonService.getAllPokemon()).thenReturn(listOf(pokemon))
+        val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
+        val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", pokemonTypes)
+        whenever(pokemonService.getAll()).thenReturn(listOf(pokemon))
 
         // When & Then
         mockMvc.get("/api/pokemon")
@@ -34,15 +36,16 @@ class PokemonControllerTest {
                 jsonPath("$[0].pokedexNumber") { value("001") }
                 jsonPath("$[0].name") { value("Bulbasaur") }
                 jsonPath("$[0].img") { value("img_url") }
-                jsonPath("$[0].types[0]") { value("Grass") }
-                jsonPath("$[0].types[1]") { value("Poison") }
+                jsonPath("$[0].types[0].name") { value("Grass") }
+                jsonPath("$[0].types[1].name") { value("Poison") }
             }
     }
 
     @Test
     fun `should return pokemon by id`() {
         // Given
-        val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", listOf("Grass", "Poison"))
+        val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
+        val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", pokemonTypes)
         whenever(pokemonService.getPokemonById(1)).thenReturn(pokemon)
 
         // When & Then
@@ -54,8 +57,8 @@ class PokemonControllerTest {
                 jsonPath("$.pokedexNumber") { value("001") }
                 jsonPath("$.name") { value("Bulbasaur") }
                 jsonPath("$.img") { value("img_url") }
-                jsonPath("$.types[0]") { value("Grass") }
-                jsonPath("$.types[1]") { value("Poison") }
+                jsonPath("$.types[0].name") { value("Grass") }
+                jsonPath("$.types[1].name") { value("Poison") }
             }
     }
 

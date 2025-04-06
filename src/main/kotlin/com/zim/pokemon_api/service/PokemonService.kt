@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class PokemonService(private val pokemonRepository: PokemonRepository) {
 
-    fun getAllPokemon(): List<Pokemon> {
+    fun getAll(): List<Pokemon> {
         return pokemonRepository.findAll()
     }
 
