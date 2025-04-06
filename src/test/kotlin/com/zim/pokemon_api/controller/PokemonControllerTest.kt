@@ -66,6 +66,9 @@ class PokemonControllerTest {
 
         // When & Then
         mockMvc.get("/api/pokemon/1")
-            .andExpect { status { isNotFound() } }
+            .andExpect {
+                status { isNotFound() }
+                content { string("Pokemon with ID 1 not found") }
+            }
     }
 }
