@@ -1,8 +1,8 @@
 package com.zim.pokemon_api.controller
 
+import com.zim.pokemon_api.exception.PokemonNotFoundException
 import com.zim.pokemon_api.model.Pokemon
 import com.zim.pokemon_api.service.PokemonService
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -10,18 +10,13 @@ import org.springframework.web.bind.annotation.*
 class PokemonController(private val pokemonService: PokemonService) {
 
     @GetMapping
-    fun getAllPokemon(): ResponseEntity<List<Pokemon>> {
-        return ResponseEntity.ok(pokemonService.getAllPokemon())
+    fun getAllPokemon(): List<Pokemon> {
+        return pokemonService.getAllPokemon()
     }
 
     @GetMapping("/{id}")
-    fun getPokemonById(@PathVariable id: Int): ResponseEntity<Pokemon> {
-        val pokemon = pokemonService.getPokemonById(id)
-
-        return if (pokemon != null) {
-            ResponseEntity.ok(pokemon)
-        } else {
-            ResponseEntity.notFound().build()
-        }
+    fun getPokemonById(@PathVariable id: Int): Pokemon {
+        return pokemonService.getPokemonById(id)
+            ?: throw PokemonNotFoundException("Pokemon with ID $id not found")
     }
 }
