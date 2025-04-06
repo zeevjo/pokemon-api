@@ -6,20 +6,19 @@ import jakarta.persistence.*
 @Table(name = "pokemons")
 data class Pokemon(
     @Id
-    @Column(name = "id")
     val id: Int,
 
-    @Column(name = "pokedex_number")
     val pokedexNumber: String,
 
-    @Column(name = "name")
     val name: String,
 
-    @Column(name = "img")
     val img: String,
 
-    @ElementCollection
-    @CollectionTable(name = "pokemon_types", joinColumns = [JoinColumn(name = "pokemon_id")])
-    @Column(name = "type")
-    val types: List<String>
+    @ManyToMany
+    @JoinTable(
+        name = "pokemon_pokemon_types",
+        joinColumns = [JoinColumn(name = "pokemon_id")],
+        inverseJoinColumns = [JoinColumn(name = "pokemon_type_id")]
+    )
+    val types: List<PokemonType> = mutableListOf()
 )

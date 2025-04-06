@@ -2,7 +2,9 @@ package com.zim.pokemon_api.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zim.pokemon_api.model.Pokemon
+import com.zim.pokemon_api.model.PokemonType
 import com.zim.pokemon_api.service.PokemonService
+import com.zim.pokemon_api.service.PokemonTypeService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
@@ -17,7 +19,7 @@ class DataInitializer {
     lateinit var pokePath: String
 
     @Bean
-    fun initDatabase(pokemonService: PokemonService, objectMapper: ObjectMapper): CommandLineRunner {
+    fun initDatabase(pokemonService: PokemonService, pokemonTypeService: PokemonTypeService, objectMapper: ObjectMapper): CommandLineRunner {
         return CommandLineRunner {
             try {
                 // Loading resource
@@ -25,15 +27,31 @@ class DataInitializer {
                 val jsonNode = objectMapper.readTree(resource.inputStream.use { it.readBytes() })
                 val pokemonArray = jsonNode.get("pokemon")
 
-                // Converting to Kotlin array
+                // Process types
+                val typeNames = mutableSetOf<String>()
+                pokemonArray.forEach { pokemonNode ->
+                    pokemonNode.get("type").forEach { typeNode ->
+                        typeNames.add(typeNode.asText())
+                    }
+                }
+
+                // Save PokemonTypes to DB
+                val types = typeNames.map { name -> PokemonType(name = name) }
+                pokemonTypeService.saveAll(types)
+
+                // Convert Pokemon objects
                 val pokemons = pokemonArray.map { pokemonNode ->
                     val id = pokemonNode.get("id").asInt()
                     val pokedexNumber = pokemonNode.get("num").asText()
                     val name = pokemonNode.get("name").asText()
                     val img = pokemonNode.get("img").asText()
 
-                    // Convert 'type' array to a List<String>
-                    val types = pokemonNode.get("type").map { it.asText() }
+                    // Convert 'type' array to PokemonType objects
+                    val types = pokemonNode.get("type").map { typeNode ->
+                        val typeName = typeNode.asText()
+                        pokemonTypeService.findByName(typeName)
+                    }
+
                     Pokemon(id, pokedexNumber, name, img, types)
                 }
 
