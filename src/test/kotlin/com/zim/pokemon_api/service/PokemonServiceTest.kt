@@ -88,35 +88,47 @@ class PokemonServiceTest {
     private val pokemonService = PokemonService(pokemonRepository)
 
     @Test
-    fun `should return all pokemons from the repository`() {
-        // Given
-        val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
-        val pokemon = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes)
-        whenever(pokemonRepository.findAll()).thenReturn(listOf(pokemon))
+    fun `should get all pokemons`() {
 
-        // When
+        val pokemonTypes1 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
+        val pokemon1 = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes1)
+
+        val pokemonTypes2 = listOf(PokemonType(name = "Fire"))
+        val pokemon2 = Pokemon(4, "Charmander", "img_url2", pokemonTypes2)
+
+        whenever(pokemonRepository.findAll()).thenReturn(listOf(pokemon1, pokemon2))
+
         val result = pokemonService.getAll()
 
-        // Then
-        assertThat(result).hasSize(1)
-        val resultPokemon = result[0]
-        assertThat(resultPokemon.pokedexNumber).isEqualTo(1)
-        assertThat(resultPokemon.name).isEqualTo("Bulbasaur")
-        assertThat(resultPokemon.img).isEqualTo("img_url")
-        assertThat(resultPokemon.types).containsExactly(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
+        assertThat(result).hasSize(2)
+
+        val resultPokemon1 = result[0]
+        assertThat(resultPokemon1.pokedexNumber).isEqualTo(1)
+        assertThat(resultPokemon1.name).isEqualTo("Bulbasaur")
+        assertThat(resultPokemon1.img).isEqualTo("img_url")
+        assertThat(resultPokemon1.types).containsExactly(
+            PokemonType(name = "Grass"),
+            PokemonType(name = "Poison")
+        )
+
+        val resultPokemon2 = result[1]
+        assertThat(resultPokemon2.pokedexNumber).isEqualTo(4)
+        assertThat(resultPokemon2.name).isEqualTo("Charmander")
+        assertThat(resultPokemon2.img).isEqualTo("img_url2")
+        assertThat(resultPokemon2.types).containsExactly(
+            PokemonType(name = "Fire")
+        )
     }
 
+
     @Test
-    fun `should find a pokemon by id`() {
-        // Given
+    fun `should get pokemon by id`() {
         val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
         val pokemon = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes)
         whenever(pokemonRepository.findById(1)).thenReturn(java.util.Optional.of(pokemon))
 
-        // When
         val result = pokemonService.getById(1)
 
-        // Then
         assertThat(result?.pokedexNumber).isEqualTo(1)
         assertThat(result?.name).isEqualTo("Bulbasaur")
         assertThat(result?.img).isEqualTo("img_url")
@@ -124,30 +136,25 @@ class PokemonServiceTest {
     }
 
     @Test
-    fun `should return null when pokemon not found by id`() {
-        // Given
+    fun `should return null when pokemon not found`() {
         whenever(pokemonRepository.findById(999)).thenReturn(java.util.Optional.empty())
 
-        // When
         val result = pokemonService.getById(999)
 
-        // Then
         assertThat(result).isNull()
     }
 
     @Test
-    fun `should save all pokemons to the repository`() {
-        // Given
+    fun `should save all pokemons`() {
+
         val pokemonTypes1 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
         val pokemonTypes2 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
         val pokemon1 = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes1)
         val pokemon2 = Pokemon(2, "Ivysaur", "img_url2", pokemonTypes2)
         val pokemons = listOf(pokemon1, pokemon2)
 
-        // When
         pokemonService.saveAll(pokemons)
 
-        // Then
         verify(pokemonRepository).saveAll(pokemons)
     }
 }

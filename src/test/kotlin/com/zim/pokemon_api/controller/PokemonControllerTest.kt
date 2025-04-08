@@ -21,7 +21,7 @@ class PokemonControllerTest {
     private lateinit var pokemonService: PokemonService
 
     @Test
-    fun `should return all pokemons`() {
+    fun `should get all pokemons`() {
 
         val pokemonTypes1 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
         val pokemon1 = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes1)
@@ -50,7 +50,7 @@ class PokemonControllerTest {
 
 
     @Test
-    fun `should return pokemon by id`() {
+    fun `should get pokemon by id`() {
 
         val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
         val pokemon = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes)
