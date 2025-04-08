@@ -15,7 +15,7 @@ import java.io.IOException
 @Configuration
 class DataInitializer {
 
-    @Value("\${poke.path:pokedex.json}")
+    @Value("\${spring.poke.path}")
     lateinit var pokePath: String
 
     @Bean
