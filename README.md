@@ -20,7 +20,6 @@ A simple REST API built with Spring Boot and Kotlin that provides information ab
 ```bash
   git clone https://github.com/zeevjo/pokemon-api.git
   cd pokemon-api
-  git switch dev
 ```
 
 ### Build the application
