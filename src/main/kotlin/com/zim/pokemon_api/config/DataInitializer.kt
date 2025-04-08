@@ -22,12 +22,11 @@ class DataInitializer {
     fun initDatabase(pokemonService: PokemonService, pokemonTypeService: PokemonTypeService, objectMapper: ObjectMapper): CommandLineRunner {
         return CommandLineRunner {
             try {
-                // Loading resource
                 val resource = ClassPathResource(pokePath)
                 val jsonNode = objectMapper.readTree(resource.inputStream.use { it.readBytes() })
                 val pokemonArray = jsonNode.get("pokemon")
 
-                // Process types
+
                 val typeNames = mutableSetOf<String>()
                 pokemonArray.forEach { pokemonNode ->
                     pokemonNode.get("type").forEach { typeNode ->
@@ -35,18 +34,17 @@ class DataInitializer {
                     }
                 }
 
-                // Save PokemonTypes to DB
                 val types = typeNames.map { name -> PokemonType(name = name) }
                 pokemonTypeService.saveAll(types)
 
-                // Convert Pokemon objects
+
                 val pokemons = pokemonArray.map { pokemonNode ->
                     val id = pokemonNode.get("id").asInt()
                     val pokedexNumber = pokemonNode.get("num").asText()
                     val name = pokemonNode.get("name").asText()
                     val img = pokemonNode.get("img").asText()
 
-                    // Convert 'type' array to PokemonType objects
+
                     val types = pokemonNode.get("type").map { typeNode ->
                         val typeName = typeNode.asText()
                         pokemonTypeService.findByName(typeName)
@@ -55,7 +53,7 @@ class DataInitializer {
                     Pokemon(id, pokedexNumber, name, img, types)
                 }
 
-                // Save all pokemons to H2DB
+
                 pokemonService.saveAll(pokemons)
                 println("Successfully loaded ${pokemons.size} Pokemon into the database")
             } catch (e: IOException) {
