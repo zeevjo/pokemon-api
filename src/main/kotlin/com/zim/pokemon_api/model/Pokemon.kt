@@ -3,7 +3,7 @@ package com.zim.pokemon_api.model
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "pokemons")
+@Table(name = "pokemon")
 data class Pokemon(
 
     @Id
