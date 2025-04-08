@@ -22,13 +22,15 @@ class PokemonControllerTest {
 
     @Test
     fun `should return all pokemons`() {
-        // Given
-        val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
-        //val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", pokemonTypes)
-        val pokemon = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes)
-        whenever(pokemonService.getAll()).thenReturn(listOf(pokemon))
 
-        // When & Then
+        val pokemonTypes1 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
+        val pokemon1 = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes1)
+
+        val pokemonTypes2 = listOf(PokemonType(name = "Fire"))
+        val pokemon2 = Pokemon(4, "Charmander", "img_url2", pokemonTypes2)
+
+        whenever(pokemonService.getAll()).thenReturn(listOf(pokemon1, pokemon2))
+
         mockMvc.get("/api/pokemon")
             .andExpect { status { isOk() } }
             .andExpect { content { contentType(MediaType.APPLICATION_JSON) } }
@@ -38,8 +40,14 @@ class PokemonControllerTest {
                 jsonPath("$[0].img") { value("img_url") }
                 jsonPath("$[0].types[0].name") { value("Grass") }
                 jsonPath("$[0].types[1].name") { value("Poison") }
+
+                jsonPath("$[1].pokedexNumber") { value(4) }
+                jsonPath("$[1].name") { value("Charmander") }
+                jsonPath("$[1].img") { value("img_url2") }
+                jsonPath("$[1].types[0].name") { value("Fire") }
             }
     }
+
 
     @Test
     fun `should return pokemon by id`() {

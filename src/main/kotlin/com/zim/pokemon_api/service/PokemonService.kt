@@ -1,7 +1,6 @@
 package com.zim.pokemon_api.service
 
 import com.zim.pokemon_api.model.Pokemon
-import com.zim.pokemon_api.model.PokemonType
 import com.zim.pokemon_api.repository.PokemonRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
