@@ -5,8 +5,6 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "pokemons")
 data class Pokemon(
-//    @Id
-//    val id: Int,
 
     @Id
     val pokedexNumber: Int,
