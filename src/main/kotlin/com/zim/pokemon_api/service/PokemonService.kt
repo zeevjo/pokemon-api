@@ -13,7 +13,7 @@ class PokemonService(private val pokemonRepository: PokemonRepository) {
         return pokemonRepository.findAll()
     }
 
-    fun getPokemonById(id: Int): Pokemon? {
+    fun getById(id: Int): Pokemon? {
         return pokemonRepository.findById(id).orElse(null)
     }
 

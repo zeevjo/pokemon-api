@@ -91,7 +91,7 @@ class PokemonServiceTest {
     fun `should return all pokemons from the repository`() {
         // Given
         val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
-        val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", pokemonTypes)
+        val pokemon = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes)
         whenever(pokemonRepository.findAll()).thenReturn(listOf(pokemon))
 
         // When
@@ -100,8 +100,7 @@ class PokemonServiceTest {
         // Then
         assertThat(result).hasSize(1)
         val resultPokemon = result[0]
-        assertThat(resultPokemon.id).isEqualTo(1)
-        assertThat(resultPokemon.pokedexNumber).isEqualTo("001")
+        assertThat(resultPokemon.pokedexNumber).isEqualTo(1)
         assertThat(resultPokemon.name).isEqualTo("Bulbasaur")
         assertThat(resultPokemon.img).isEqualTo("img_url")
         assertThat(resultPokemon.types).containsExactly(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
@@ -111,16 +110,14 @@ class PokemonServiceTest {
     fun `should find a pokemon by id`() {
         // Given
         val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
-        val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", pokemonTypes)
+        val pokemon = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes)
         whenever(pokemonRepository.findById(1)).thenReturn(java.util.Optional.of(pokemon))
 
         // When
-        val result = pokemonService.getPokemonById(1)
+        val result = pokemonService.getById(1)
 
         // Then
-        assertThat(result).isNotNull
-        assertThat(result?.id).isEqualTo(1)
-        assertThat(result?.pokedexNumber).isEqualTo("001")
+        assertThat(result?.pokedexNumber).isEqualTo(1)
         assertThat(result?.name).isEqualTo("Bulbasaur")
         assertThat(result?.img).isEqualTo("img_url")
         assertThat(result?.types).containsExactly(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
@@ -132,7 +129,7 @@ class PokemonServiceTest {
         whenever(pokemonRepository.findById(999)).thenReturn(java.util.Optional.empty())
 
         // When
-        val result = pokemonService.getPokemonById(999)
+        val result = pokemonService.getById(999)
 
         // Then
         assertThat(result).isNull()
@@ -143,8 +140,8 @@ class PokemonServiceTest {
         // Given
         val pokemonTypes1 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
         val pokemonTypes2 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
-        val pokemon1 = Pokemon(1, "001", "Bulbasaur", "img_url", pokemonTypes1)
-        val pokemon2 = Pokemon(2, "002", "Ivysaur", "img_url2", pokemonTypes2)
+        val pokemon1 = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes1)
+        val pokemon2 = Pokemon(2, "Ivysaur", "img_url2", pokemonTypes2)
         val pokemons = listOf(pokemon1, pokemon2)
 
         // When

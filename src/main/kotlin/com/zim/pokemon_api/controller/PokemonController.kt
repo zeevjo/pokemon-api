@@ -16,7 +16,7 @@ class PokemonController(private val pokemonService: PokemonService) {
 
     @GetMapping("/{id}")
     fun getPokemonById(@PathVariable id: Int): Pokemon {
-        return pokemonService.getPokemonById(id)
+        return pokemonService.getById(id)
             ?: throw PokemonNotFoundException("Pokemon with ID $id not found")
     }
 }

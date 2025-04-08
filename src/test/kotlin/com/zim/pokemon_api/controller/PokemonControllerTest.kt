@@ -24,7 +24,8 @@ class PokemonControllerTest {
     fun `should return all pokemons`() {
         // Given
         val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
-        val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", pokemonTypes)
+        //val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", pokemonTypes)
+        val pokemon = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes)
         whenever(pokemonService.getAll()).thenReturn(listOf(pokemon))
 
         // When & Then
@@ -32,8 +33,7 @@ class PokemonControllerTest {
             .andExpect { status { isOk() } }
             .andExpect { content { contentType(MediaType.APPLICATION_JSON) } }
             .andExpect {
-                jsonPath("$[0].id") { value(1) }
-                jsonPath("$[0].pokedexNumber") { value("001") }
+                jsonPath("$[0].pokedexNumber") { value(1) }
                 jsonPath("$[0].name") { value("Bulbasaur") }
                 jsonPath("$[0].img") { value("img_url") }
                 jsonPath("$[0].types[0].name") { value("Grass") }
@@ -43,18 +43,16 @@ class PokemonControllerTest {
 
     @Test
     fun `should return pokemon by id`() {
-        // Given
-        val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
-        val pokemon = Pokemon(1, "001", "Bulbasaur", "img_url", pokemonTypes)
-        whenever(pokemonService.getPokemonById(1)).thenReturn(pokemon)
 
-        // When & Then
+        val pokemonTypes = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
+        val pokemon = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes)
+        whenever(pokemonService.getById(1)).thenReturn(pokemon)
+
         mockMvc.get("/api/pokemon/1")
             .andExpect { status { isOk() } }
             .andExpect { content { contentType(MediaType.APPLICATION_JSON) } }
             .andExpect {
-                jsonPath("$.id") { value(1) }
-                jsonPath("$.pokedexNumber") { value("001") }
+                jsonPath("$.pokedexNumber") { value(1) }
                 jsonPath("$.name") { value("Bulbasaur") }
                 jsonPath("$.img") { value("img_url") }
                 jsonPath("$.types[0].name") { value("Grass") }
@@ -64,10 +62,8 @@ class PokemonControllerTest {
 
     @Test
     fun `should return not found when pokemon does not exist`() {
-        // Given
-        whenever(pokemonService.getPokemonById(1)).thenReturn(null)
+        whenever(pokemonService.getById(1)).thenReturn(null)
 
-        // When & Then
         mockMvc.get("/api/pokemon/1")
             .andExpect {
                 status { isNotFound() }

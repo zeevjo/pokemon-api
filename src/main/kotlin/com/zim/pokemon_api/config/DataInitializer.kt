@@ -39,8 +39,8 @@ class DataInitializer {
 
 
                 val pokemons = pokemonArray.map { pokemonNode ->
+
                     val id = pokemonNode.get("id").asInt()
-                    val pokedexNumber = pokemonNode.get("num").asText()
                     val name = pokemonNode.get("name").asText()
                     val img = pokemonNode.get("img").asText()
 
@@ -50,9 +50,8 @@ class DataInitializer {
                         pokemonTypeService.findByName(typeName)
                     }
 
-                    Pokemon(id, pokedexNumber, name, img, types)
+                    Pokemon(id, name, img, types)
                 }
-
 
                 pokemonService.saveAll(pokemons)
                 println("Successfully loaded ${pokemons.size} Pokemon into the database")

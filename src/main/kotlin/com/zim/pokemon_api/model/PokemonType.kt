@@ -13,7 +13,5 @@ data class PokemonType(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     val id: Long? = null,
-
-
     val name: String
 )
