@@ -48,7 +48,6 @@ class PokemonControllerTest {
             }
     }
 
-
     @Test
     fun `should get pokemon by id`() {
 

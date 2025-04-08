@@ -1,6 +1,8 @@
 package com.zim.pokemon_api.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.zim.pokemon_api.model.Pokemon
 import com.zim.pokemon_api.model.PokemonType
 import com.zim.pokemon_api.service.PokemonService
@@ -12,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.spy
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.verify
@@ -36,30 +40,62 @@ class DataInitializerTest {
         objectMapper = ObjectMapper()
         dataInitializer.pokePath = "test-pokedex.json"
 
-        grassType = PokemonType(name ="Grass")
+        grassType = PokemonType(name = "Grass")
         poisonType = PokemonType(name = "Poison")
 
-        setupPokemonTypeMocks()
+        `when`(pokemonTypeService.findByName("Grass")).thenReturn(grassType)
+        `when`(pokemonTypeService.findByName("Poison")).thenReturn(poisonType)
     }
 
     @Test
     fun `should load and save pokemons from json`() {
-        val commandLineRunner = dataInitializer.initDatabase(pokemonService, pokemonTypeService, objectMapper)
+        val dataInitializerSpy = spy(dataInitializer)
+
+        val jsonNode = createTestJsonData()
+        doReturn(jsonNode).`when`(dataInitializerSpy).loadPokemonJsonData(objectMapper)
+
+        val commandLineRunner = dataInitializerSpy.initDatabase(pokemonService, pokemonTypeService, objectMapper)
         commandLineRunner.run()
 
         verifyPokemonTypesSaved()
         verifyPokemonsSaved()
     }
 
-    private fun setupPokemonTypeMocks() {
-        `when`(pokemonTypeService.findByName("Grass")).thenReturn(grassType)
-        `when`(pokemonTypeService.findByName("Poison")).thenReturn(poisonType)
+    private fun createTestJsonData(): ObjectNode {
+
+        val rootNode = objectMapper.createObjectNode()
+
+        val pokemonArray = objectMapper.createArrayNode()
+
+        val bulbasaur = objectMapper.createObjectNode()
+        bulbasaur.put("id", 1)
+        bulbasaur.put("name", "Bulbasaur")
+        bulbasaur.put("img", "img_url")
+        val bulbasaurTypes = objectMapper.createArrayNode()
+        bulbasaurTypes.add("Grass")
+        bulbasaurTypes.add("Poison")
+        bulbasaur.set<ArrayNode>("type", bulbasaurTypes)
+
+        val ivysaur = objectMapper.createObjectNode()
+        ivysaur.put("id", 2)
+        ivysaur.put("name", "Ivysaur")
+        ivysaur.put("img", "img_url")
+        val ivysaurTypes = objectMapper.createArrayNode()
+        ivysaurTypes.add("Grass")
+        ivysaurTypes.add("Poison")
+        ivysaur.set<ArrayNode>("type", ivysaurTypes)
+
+        pokemonArray.add(bulbasaur)
+        pokemonArray.add(ivysaur)
+
+        rootNode.set<ArrayNode>("pokemon", pokemonArray)
+
+        return rootNode
     }
 
     private fun verifyPokemonTypesSaved() {
         val typeCaptor = argumentCaptor<List<PokemonType>>()
         verify(pokemonTypeService).saveAll(typeCaptor.capture())
-
         val savedTypes = typeCaptor.firstValue
         assertThat(savedTypes).isNotEmpty()
         assertThat(savedTypes.map { it.name }).containsExactlyInAnyOrder("Grass", "Poison")
@@ -68,17 +104,14 @@ class DataInitializerTest {
     private fun verifyPokemonsSaved() {
         val pokemonCaptor = argumentCaptor<List<Pokemon>>()
         verify(pokemonService).saveAll(pokemonCaptor.capture())
-
         val savedPokemons = pokemonCaptor.firstValue
         assertThat(savedPokemons).isNotEmpty()
         assertThat(savedPokemons).hasSize(2)
-
         verifyBulbasaurData(savedPokemons[0])
         verifyIvysaurData(savedPokemons[1])
     }
 
     private fun verifyBulbasaurData(bulbasaur: Pokemon) {
-        //assertThat(bulbasaur.id).isEqualTo(1)
         assertThat(bulbasaur.pokedexNumber).isEqualTo(1)
         assertThat(bulbasaur.name).isEqualTo("Bulbasaur")
         assertThat(bulbasaur.img).isEqualTo("img_url")
@@ -86,7 +119,6 @@ class DataInitializerTest {
     }
 
     private fun verifyIvysaurData(ivysaur: Pokemon) {
-        //assertThat(ivysaur.id).isEqualTo(2)
         assertThat(ivysaur.pokedexNumber).isEqualTo(2)
         assertThat(ivysaur.name).isEqualTo("Ivysaur")
         assertThat(ivysaur.img).isEqualTo("img_url")

@@ -106,7 +106,7 @@ class DataInitializer {
         }
     }
 
-    private fun loadPokemonJsonData(objectMapper: ObjectMapper): JsonNode {
+    fun loadPokemonJsonData(objectMapper: ObjectMapper): JsonNode {
         val resource = ClassPathResource(pokePath)
         return objectMapper.readTree(resource.inputStream.use { it.readBytes() })
     }
