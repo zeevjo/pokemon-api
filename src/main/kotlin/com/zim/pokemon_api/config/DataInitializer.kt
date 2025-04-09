@@ -6,34 +6,41 @@ import com.zim.pokemon_api.model.Pokemon
 import com.zim.pokemon_api.model.PokemonType
 import com.zim.pokemon_api.service.PokemonService
 import com.zim.pokemon_api.service.PokemonTypeService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 import java.io.IOException
-import kotlin.system.exitProcess
 
 @Configuration
 class DataInitializer {
     @Value("\${spring.poke.path}")
     lateinit var pokePath: String
 
+    @Autowired
+    lateinit var pokemonService: PokemonService
+
+    @Autowired
+    lateinit var pokemonTypeService: PokemonTypeService
+
+    @Autowired
+    lateinit var objectMapper: ObjectMapper
+
     @Bean
-    fun initDatabase(
-        pokemonService: PokemonService,
-        pokemonTypeService: PokemonTypeService,
-        objectMapper: ObjectMapper
-    ): CommandLineRunner {
+    fun initDatabase(): CommandLineRunner {
         return CommandLineRunner {
             try {
-                val jsonNode = loadPokemonJsonData(objectMapper)
+                val jsonNode = loadPokemonJsonData()
                 val pokemonArray = extractPokemonArray(jsonNode)
 
-                extractAndSavePokemonTypes(pokemonArray, pokemonTypeService)
-                val pokemons = createPokemonEntities(pokemonArray, pokemonTypeService)
+                val typeNames = collectUniqueTypeNames(pokemonArray)
+                savePokemonTypes(typeNames)
 
+                val pokemons = createPokemonEntities(pokemonArray)
                 pokemonService.saveAll(pokemons)
+
                 println("Successfully loaded ${pokemons.size} Pokemon into the database")
             } catch (e: IOException) {
                 println("Error reading the file: ${e.message}")
@@ -42,23 +49,13 @@ class DataInitializer {
         }
     }
 
-    fun loadPokemonJsonData(objectMapper: ObjectMapper): JsonNode {
+    fun loadPokemonJsonData(): JsonNode {
         val resource = ClassPathResource(pokePath)
         return objectMapper.readTree(resource.inputStream.use { it.readBytes() })
     }
 
     private fun extractPokemonArray(jsonNode: JsonNode): JsonNode {
         return jsonNode.get("pokemon")
-    }
-
-    private fun extractAndSavePokemonTypes(
-        pokemonArray: JsonNode,
-        pokemonTypeService: PokemonTypeService
-    ): List<PokemonType> {
-        val typeNames = collectUniqueTypeNames(pokemonArray)
-        val types = typeNames.map { name -> PokemonType(name = name) }
-        pokemonTypeService.saveAll(types)
-        return types
     }
 
     private fun collectUniqueTypeNames(pokemonArray: JsonNode): Set<String> {
@@ -71,24 +68,23 @@ class DataInitializer {
         return typeNames
     }
 
-    private fun createPokemonEntities(
-        pokemonArray: JsonNode,
-        pokemonTypeService: PokemonTypeService
-    ): List<Pokemon> {
+    private fun savePokemonTypes(typeNames: Set<String>): List<PokemonType> {
+        val types = typeNames.map { name -> PokemonType(name = name) }
+        pokemonTypeService.saveAll(types)
+        return types
+    }
+
+    private fun createPokemonEntities(pokemonArray: JsonNode): List<Pokemon> {
         return pokemonArray.map { pokemonNode ->
             val id = pokemonNode.get("id").asInt()
             val name = pokemonNode.get("name").asText()
             val img = pokemonNode.get("img").asText()
-            val types = extractPokemonTypes(pokemonNode, pokemonTypeService)
-
+            val types = extractPokemonTypes(pokemonNode)
             Pokemon(id, name, img, types)
         }
     }
 
-    private fun extractPokemonTypes(
-        pokemonNode: JsonNode,
-        pokemonTypeService: PokemonTypeService
-    ): List<PokemonType> {
+    private fun extractPokemonTypes(pokemonNode: JsonNode): List<PokemonType> {
         return pokemonNode.get("type").map { typeNode ->
             val typeName = typeNode.asText()
             pokemonTypeService.findByName(typeName)
