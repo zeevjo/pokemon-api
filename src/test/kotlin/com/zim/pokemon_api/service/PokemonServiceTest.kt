@@ -17,8 +17,8 @@ class PokemonServiceTest {
         val pokemonTypes1 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
         val pokemon1 = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes1)
 
-        val pokemonTypes2 = listOf(PokemonType(name = "Fire"))
-        val pokemon2 = Pokemon(4, "Charmander", "img_url2", pokemonTypes2)
+        val pokemonTypes2 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
+        val pokemon2 = Pokemon(2, "Ivysaur", "img_url", pokemonTypes2)
 
         whenever(pokemonRepository.findAll()).thenReturn(listOf(pokemon1, pokemon2))
 
@@ -36,11 +36,12 @@ class PokemonServiceTest {
         )
 
         val resultPokemon2 = result[1]
-        assertThat(resultPokemon2.pokedexNumber).isEqualTo(4)
-        assertThat(resultPokemon2.name).isEqualTo("Charmander")
-        assertThat(resultPokemon2.img).isEqualTo("img_url2")
+        assertThat(resultPokemon2.pokedexNumber).isEqualTo(2)
+        assertThat(resultPokemon2.name).isEqualTo("Ivysaur")
+        assertThat(resultPokemon2.img).isEqualTo("img_url")
         assertThat(resultPokemon2.types).containsExactly(
-            PokemonType(name = "Fire")
+            PokemonType(name = "Grass"),
+            PokemonType(name = "Poison")
         )
     }
 

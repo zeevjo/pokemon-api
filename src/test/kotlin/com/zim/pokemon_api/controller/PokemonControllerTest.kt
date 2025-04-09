@@ -26,8 +26,8 @@ class PokemonControllerTest {
         val pokemonTypes1 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
         val pokemon1 = Pokemon(1, "Bulbasaur", "img_url", pokemonTypes1)
 
-        val pokemonTypes2 = listOf(PokemonType(name = "Fire"))
-        val pokemon2 = Pokemon(4, "Charmander", "img_url2", pokemonTypes2)
+        val pokemonTypes2 = listOf(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
+        val pokemon2 = Pokemon(2, "Ivysaur", "img_url", pokemonTypes2)
 
         whenever(pokemonService.getAll()).thenReturn(listOf(pokemon1, pokemon2))
 
@@ -41,10 +41,11 @@ class PokemonControllerTest {
                 jsonPath("$[0].types[0].name") { value("Grass") }
                 jsonPath("$[0].types[1].name") { value("Poison") }
 
-                jsonPath("$[1].pokedexNumber") { value(4) }
-                jsonPath("$[1].name") { value("Charmander") }
-                jsonPath("$[1].img") { value("img_url2") }
-                jsonPath("$[1].types[0].name") { value("Fire") }
+                jsonPath("$[1].pokedexNumber") { value(2) }
+                jsonPath("$[1].name") { value("Ivysaur") }
+                jsonPath("$[1].img") { value("img_url") }
+                jsonPath("$[1].types[0].name") { value("Grass") }
+                jsonPath("$[1].types[1].name") { value("Poison") }
             }
     }
 
