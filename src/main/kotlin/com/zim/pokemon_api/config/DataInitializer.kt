@@ -37,7 +37,7 @@ class DataInitializer {
                 println("Successfully loaded ${pokemons.size} Pokemon into the database")
             } catch (e: IOException) {
                 println("Error reading the file: ${e.message}")
-                exitProcess(1)
+                throw RuntimeException("Failed to initialize Pokemon database", e)
             }
         }
     }
