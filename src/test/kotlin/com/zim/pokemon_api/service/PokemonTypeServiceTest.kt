@@ -28,7 +28,7 @@ class PokemonTypeServiceTest {
 
         service.saveAll(types)
 
-        verify(repository, times(1)).saveAll(types)
+        verify(repository).saveAll(types)
     }
 
     @Test
@@ -40,6 +40,6 @@ class PokemonTypeServiceTest {
         val result = service.findByName(typeName)
 
         assertEquals(expectedType, result)
-        verify(repository, times(1)).findByName(typeName)
+        verify(repository).findByName(typeName)
     }
 }
