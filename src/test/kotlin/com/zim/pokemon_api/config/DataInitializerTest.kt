@@ -28,9 +28,6 @@ class DataInitializerTest {
     @Mock
     lateinit var pokemonTypeService: PokemonTypeService
 
-//    @Mock
-//    lateinit var objectMapper: ObjectMapper
-
     @InjectMocks
     lateinit var dataInitializer: DataInitializer
 
