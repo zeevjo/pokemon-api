@@ -34,7 +34,7 @@ class DataInitializerTest {
     private lateinit var grassType: PokemonType
     private lateinit var poisonType: PokemonType
 
-    private val realObjectMapper = ObjectMapper()
+    private val objectMapper = ObjectMapper()
 
     @BeforeEach
     fun setup() {
@@ -62,24 +62,24 @@ class DataInitializerTest {
     }
 
     private fun createTestJsonData(): ObjectNode {
-        val rootNode = realObjectMapper.createObjectNode()
+        val rootNode = objectMapper.createObjectNode()
 
-        val pokemonArray = realObjectMapper.createArrayNode()
+        val pokemonArray = objectMapper.createArrayNode()
 
-        val bulbasaur = realObjectMapper.createObjectNode()
+        val bulbasaur = objectMapper.createObjectNode()
         bulbasaur.put("id", 1)
         bulbasaur.put("name", "Bulbasaur")
         bulbasaur.put("img", "img_url")
-        val bulbasaurTypes = realObjectMapper.createArrayNode()
+        val bulbasaurTypes = objectMapper.createArrayNode()
         bulbasaurTypes.add("Grass")
         bulbasaurTypes.add("Poison")
         bulbasaur.set<ArrayNode>("type", bulbasaurTypes)
 
-        val ivysaur = realObjectMapper.createObjectNode()
+        val ivysaur = objectMapper.createObjectNode()
         ivysaur.put("id", 2)
         ivysaur.put("name", "Ivysaur")
         ivysaur.put("img", "img_url")
-        val ivysaurTypes = realObjectMapper.createArrayNode()
+        val ivysaurTypes = objectMapper.createArrayNode()
         ivysaurTypes.add("Grass")
         ivysaurTypes.add("Poison")
         ivysaur.set<ArrayNode>("type", ivysaurTypes)
