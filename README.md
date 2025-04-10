@@ -48,19 +48,31 @@ Example response:
 ```json
 [
   {
-    "id": 1,
+    "pokedexNumber": 1,
     "name": "Bulbasaur",
-    "types": ["Grass", "Poison"],
-    "pokedexNumber": "001",
-    "imageUrl": "http://www.serebii.net/pokemongo/pokemon/001.png"
+    "imgUrl": "http://www.serebii.net/pokemongo/pokemon/001.png",
+    "types": [
+      {
+        "name": "Grass"
+      },
+      {
+        "name": "Poison"
+      }
+    ]
   },
   {
-    "id": 2,
+    "pokedexNumber": 2,
     "name": "Ivysaur",
-    "types": ["Grass", "Poison"],
-    "pokedexNumber": "002",
-    "imageUrl": "http://www.serebii.net/pokemongo/pokemon/002.png"
-  },
+    "imgUrl": "http://www.serebii.net/pokemongo/pokemon/002.png",
+    "types": [
+      {
+        "name": "Grass"
+      },
+      {
+        "name": "Poison"
+      }
+    ]
+  }
   // ... more Pokemons
 ]
 ```
@@ -74,11 +86,14 @@ GET /api/pokemon/{id}
 Example response for `/api/pokemon/25`:
 ```json
 {
-  "id": 25,
+  "pokedexNumber": 25,
   "name": "Pikachu",
-  "types": ["Electric"],
-  "pokedexNumber": "025",
-  "imageUrl": "http://www.serebii.net/pokemongo/pokemon/025.png"
+  "imgUrl": "http://www.serebii.net/pokemongo/pokemon/025.png",
+  "types": [
+    {
+      "name": "Electric"
+    }
+  ]
 }
 ```
 
