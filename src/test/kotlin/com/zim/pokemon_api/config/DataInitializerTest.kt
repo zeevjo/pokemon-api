@@ -113,14 +113,14 @@ class DataInitializerTest {
     private fun verifyBulbasaurData(bulbasaur: Pokemon) {
         assertThat(bulbasaur.pokedexNumber).isEqualTo(1)
         assertThat(bulbasaur.name).isEqualTo("Bulbasaur")
-        assertThat(bulbasaur.img).isEqualTo("img_url")
+        assertThat(bulbasaur.imgUrl).isEqualTo("img_url")
         assertThat(bulbasaur.types).containsExactly(grassType, poisonType)
     }
 
     private fun verifyIvysaurData(ivysaur: Pokemon) {
         assertThat(ivysaur.pokedexNumber).isEqualTo(2)
         assertThat(ivysaur.name).isEqualTo("Ivysaur")
-        assertThat(ivysaur.img).isEqualTo("img_url")
+        assertThat(ivysaur.imgUrl).isEqualTo("img_url")
         assertThat(ivysaur.types).containsExactly(grassType, poisonType)
     }
 }

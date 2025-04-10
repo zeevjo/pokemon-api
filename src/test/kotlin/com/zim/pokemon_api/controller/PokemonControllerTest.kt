@@ -37,13 +37,13 @@ class PokemonControllerTest {
             .andExpect {
                 jsonPath("$[0].pokedexNumber") { value(1) }
                 jsonPath("$[0].name") { value("Bulbasaur") }
-                jsonPath("$[0].img") { value("img_url") }
+                jsonPath("$[0].imgUrl") { value("img_url") }
                 jsonPath("$[0].types[0].name") { value("Grass") }
                 jsonPath("$[0].types[1].name") { value("Poison") }
 
                 jsonPath("$[1].pokedexNumber") { value(2) }
                 jsonPath("$[1].name") { value("Ivysaur") }
-                jsonPath("$[1].img") { value("img_url") }
+                jsonPath("$[1].imgUrl") { value("img_url") }
                 jsonPath("$[1].types[0].name") { value("Grass") }
                 jsonPath("$[1].types[1].name") { value("Poison") }
             }
@@ -62,7 +62,7 @@ class PokemonControllerTest {
             .andExpect {
                 jsonPath("$.pokedexNumber") { value(1) }
                 jsonPath("$.name") { value("Bulbasaur") }
-                jsonPath("$.img") { value("img_url") }
+                jsonPath("$.imgUrl") { value("img_url") }
                 jsonPath("$.types[0].name") { value("Grass") }
                 jsonPath("$.types[1].name") { value("Poison") }
             }

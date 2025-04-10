@@ -12,7 +12,7 @@ data class Pokemon(
 
     val name: String,
 
-    val img: URL,
+    val imgUrl: String,
 
     @ManyToMany
     @JoinTable(

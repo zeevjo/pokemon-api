@@ -29,7 +29,7 @@ class PokemonServiceTest {
         val resultPokemon1 = result[0]
         assertThat(resultPokemon1.pokedexNumber).isEqualTo(1)
         assertThat(resultPokemon1.name).isEqualTo("Bulbasaur")
-        assertThat(resultPokemon1.img).isEqualTo("img_url")
+        assertThat(resultPokemon1.imgUrl).isEqualTo("img_url")
         assertThat(resultPokemon1.types).containsExactly(
             PokemonType(name = "Grass"),
             PokemonType(name = "Poison")
@@ -38,7 +38,7 @@ class PokemonServiceTest {
         val resultPokemon2 = result[1]
         assertThat(resultPokemon2.pokedexNumber).isEqualTo(2)
         assertThat(resultPokemon2.name).isEqualTo("Ivysaur")
-        assertThat(resultPokemon2.img).isEqualTo("img_url")
+        assertThat(resultPokemon2.imgUrl).isEqualTo("img_url")
         assertThat(resultPokemon2.types).containsExactly(
             PokemonType(name = "Grass"),
             PokemonType(name = "Poison")
@@ -56,7 +56,7 @@ class PokemonServiceTest {
 
         assertThat(result?.pokedexNumber).isEqualTo(1)
         assertThat(result?.name).isEqualTo("Bulbasaur")
-        assertThat(result?.img).isEqualTo("img_url")
+        assertThat(result?.imgUrl).isEqualTo("img_url")
         assertThat(result?.types).containsExactly(PokemonType(name = "Grass"), PokemonType(name = "Poison"))
     }
 
