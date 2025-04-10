@@ -1,6 +1,7 @@
 package com.zim.pokemon_api.model
 
 import jakarta.persistence.*
+import java.net.URL
 
 @Entity
 @Table(name = "pokemon")
@@ -11,7 +12,7 @@ data class Pokemon(
 
     val name: String,
 
-    val img: String,
+    val img: URL,
 
     @ManyToMany
     @JoinTable(

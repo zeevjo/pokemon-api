@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 import java.io.IOException
+import java.net.URI
 
 @Configuration
 class DataInitializer {
@@ -78,9 +79,9 @@ class DataInitializer {
         return pokemonArray.map { pokemonNode ->
             val id = pokemonNode.get("id").asInt()
             val name = pokemonNode.get("name").asText()
-            val img = pokemonNode.get("img").asText()
+            val url = URI(pokemonNode.get("img").asText()).toURL()
             val types = extractPokemonTypes(pokemonNode)
-            Pokemon(id, name, img, types)
+            Pokemon(id, name, url, types)
         }
     }
 
